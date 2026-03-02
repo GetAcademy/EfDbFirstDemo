@@ -1,0 +1,1 @@
+Scaffold-DbContext "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ApiDev;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DbModels -Context SchoolContext  -Namespace DbModels -NoOnConfiguring  
