@@ -7,6 +7,14 @@ optionsBuilder.UseSqlServer(connStr);
 
 using var context = new SchoolContext(optionsBuilder.Options);
 
+
+var course1 = new Course { Id = 5, Title = "kjhkjh" };
+context.Courses.Add(course1);
+context.SaveChanges();
+
+
+
+return;
 var coursesWithAssignments = context.Courses
     .Include(c => c.Assignments)
     .OrderBy(c => c.Title)
@@ -20,6 +28,35 @@ var coursesWithAssignments = context.Courses
             .ToList()
     })
     .ToList();
+
+/*
+SELECT c.Id        AS CourseId,
+          c.Title     AS CourseTitle,
+          a.Id        AS AssignmentId,
+          a.Title     AS AssignmentTitle
+   FROM Course c
+   LEFT JOIN Assignment a ON a.CourseId = c.Id
+   ORDER BY c.Title, a.Title;
+
+var coursesWithAssignments =
+    (from c in context.Courses
+        orderby c.Title
+        select new
+        {
+            CourseId = c.Id,
+            CourseTitle = c.Title,
+            Assignments =
+                (from a in c.Assignments
+                    orderby a.Title
+                    select new
+                    {
+                        a.Id,
+                        a.Title
+                    }).ToList()
+        })
+    .Include(c => c.Assignments) // fortsatt nødvendig for EF Core eager loading
+    .ToList();
+*/
 
 foreach (var course in coursesWithAssignments)
 {
